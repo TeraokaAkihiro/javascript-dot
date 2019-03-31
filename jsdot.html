@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jsdot</title>
+  <style type="text/css">
+    html, body {
+      width: 100%; height: 100%;
+      margin: 0; padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="mainCanvas"></canvas>
+</body>
+  <script type="text/javascript">
+    var canvas = document.getElementById("mainCanvas");
+    var canvasWidth = canvas.width;
+    var canvasHeight = canvas.height;
+    var ctx = canvas.getContext("2d");
+    var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+
+    main();
+
+    function main () {
+      canvas.width = document.body.clientWidth;
+      canvas.height = document.body.clientHeight;
+      canvasWidth = canvas.width;
+      canvasHeight = canvas.height;
+      canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+
+      for (var i = canvasWidth -1; i >= 0; i-=2) {
+        for (var j = canvasHeight -1; j >= 0; j-=2) {
+          drawPixel(i, j, 0, 0, 0, 255);
+        }
+      }
+      updateCanvas();
+    }
+
+    function drawPixel (x, y, r, g, b, a) {
+        var index = (x + y * canvasWidth) * 4;
+
+        canvasData.data[index + 0] = r;
+        canvasData.data[index + 1] = g;
+        canvasData.data[index + 2] = b;
+        canvasData.data[index + 3] = a;
+    }
+
+    function updateCanvas() {
+        ctx.putImageData(canvasData, 0, 0);
+    }
+
+    window.addEventListener('resize', function(event){
+      main();
+    });
+
+  </script>
+</html>
